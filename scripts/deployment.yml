@@ -1,0 +1,39 @@
+# Write Kubernetes Deployment Script
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task6
+  template:
+    metadata:
+      labels:
+        app: task6
+    spec:
+      containers: 
+      - name: task6
+        image: task6:1
+        ports:
+        - containerPort: 9494
+        imagePullPolicy: null
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://task_6_user:UG5BRxtTNoNW5FPucbmej9WJh4b010sr@dpg-crb5jt2j1k6c73cn9log-a.oregon-postgres.render.com/task_6"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task6
+spec:
+  selector:
+    app: task6
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9494
+      targetPort: 9494
+      nodePort: 30000
